@@ -20,6 +20,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 apply plugin: 'realm-android'
 apply plugin: 'io.fabric'
+apply plugin: 'com.github.triplet.play'
 
 // App version
 ext.versionMajor = 1 // API Changes, adding big new feature, redesign the App
@@ -37,6 +38,32 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.1'
 
+    signingConfigs {
+        debug {
+            keyAlias keystoreProperties['keyAliasDebug']
+            keyPassword keystoreProperties['keyPasswordDebug']
+            storeFile file(keystoreProperties['storeFileDebug'])
+            storePassword keystoreProperties['storePasswordDebug']
+        }
+        relase {
+            storeFile file(keystoreProperties['storeFileRelease'])
+            storePassword keystoreProperties['storePasswordRelease']
+            keyAlias keystoreProperties['keyAliasRelease']
+            keyPassword keystoreProperties['keyPasswordRelease']
+        }
+    }
+
+    playAccountConfigs {
+        defaultAccountConfig {
+            serviceAccountEmail = keystoreProperties['serviceAccountEmail']
+            jsonFile = file(keystoreProperties['googlePlayKey'])
+        }
+    }
+
+    play {
+        track = 'beta'
+    }
+
     defaultConfig {
         applicationId "com.davidmiguel.gobees"
         minSdkVersion 19
@@ -44,27 +71,13 @@ android {
         versionCode generateVersionCode()
         versionName generateVersionName()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-                manifestPlaceholders = [
+        manifestPlaceholders = [
                 crashlyticsKey: keystoreProperties['CrashlyticsKey']
         ]
         buildConfigField 'String', 'COMMIT_HASH', "\"${getCommitHash()}\""
         buildConfigField 'String', 'BUILD_DATE', "\"${getBuildDate()}\""
         buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', keystoreProperties['OpenWeatherMapApiKey']
-    }
-
-    signingConfigs {
-          debug {
-            keyAlias keystoreProperties['keyAliasDebug']
-            keyPassword keystoreProperties['keyPasswordDebug']
-            storeFile file(keystoreProperties['storeFileDebug'])
-            storePassword keystoreProperties['storePasswordDebug']
-        }
-        relase {
-            keyAlias keystoreProperties['storeFileRelease ']
-            storePassword  keystoreProperties['storePasswordRelease']
-            keyAlias  file(keystoreProperties['keyAliasRelease'])
-            keyPassword  keystoreProperties['keyPasswordRelease']
-        }
+        playAccountConfig = playAccountConfigs.defaultAccountConfig
     }
 
     buildTypes {
@@ -92,7 +105,7 @@ android {
     }
 
     productFlavors {
-                // Mock: mock data layer
+        // Mock: mock data layer
         mock {
             applicationIdSuffix = ".mock"
             resValue('string', 'app_name', getAppName() + '-mock')
@@ -162,7 +175,7 @@ dependencies {
     compile 'com.android.support:design:26.1.0'
     // Google Location and Activity Recognition : https://developers.google.com/android/guides/setup
     compile 'com.google.android.gms:play-services-location:11.4.0'
-     // Firebase Analytics : https://firebase.google.com/docs/android/setup#available_libraries
+    // Firebase Analytics : https://firebase.google.com/docs/android/setup#available_libraries
     compile 'com.google.firebase:firebase-core:11.4.0'
     // OpenCV (computer vision) : https://github.com/davidmigloz/opencv-android-gradle-repo/
     compile 'com.github.davidmigloz:opencv-android-gradle-repo:3.2.0'
@@ -269,7 +282,7 @@ sonarqube {
  * Returns the number of the current build in Travis.
  */
 private static Integer getBuildNumber() {
-    return System.getenv()["TRAVIS_BUILD_NUMBER"] as Integer ?: 0
+    return System.getenv()["TRAVIS_BUILD_NUMBER"] as Integer ?: 1
 }
 
 /**
