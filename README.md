@@ -34,6 +34,7 @@ GoBees!
 - [Jorge Fernández Moreno](https://github.com/jfm1006)
 - [David Merinero Porres](https://github.com/dmp1002)
 - [David Renedo Gil](https://github.com/drg1006)
+- [Borja Blanco Porres](https://github.com/bbp1002)
 
 ## License
 
