@@ -32,6 +32,7 @@ GoBees!
 **Incluid debajo el nombre de los miembros del grupo:**
 
 - [Jorge Fernández Moreno](https://github.com/jfm1006)
+- [David Merinero Porres](https://github.com/dmp1002)
 
 ## License
 
