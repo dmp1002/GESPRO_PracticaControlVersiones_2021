@@ -29,6 +29,10 @@ Find more information on our website: http://gobees.io.
 
 GoBees!
 
+**Incluid debajo el nombre de los miembros del grupo:**
+
+- [Jorge Fernández Moreno](https://github.com/jfm1006)
+
 ## License
 
 Copyright (c) 2016 - 2017 David Miguel Lozano
